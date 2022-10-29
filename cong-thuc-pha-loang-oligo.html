@@ -17,15 +17,17 @@
             <div class="col-6">
                 <h2>Cách pha loãng các oligo ở các nồng độ khác nhau về các nồng độ đồng nhất</h2>
                 <p>Nhập nồng độ tuỳ chỉnh(đơn vị: pmol/µl)</p>
+                <form>
                 <div class="input-group mb-3">
                     <input type="text" class="form-control" placeholder="ví dụ: 216" id="nongDoMoi"
                         aria-describedby="tinhThetich">
-                    <button class="btn btn-primary" type="button" id="tinhTheTich">Xem thể tích Buffer</button>
+                    <button class="btn btn-primary" type="submit" id="tinhTheTich">Xem thể tích Buffer</button>
                 </div>
-                <div id="displayBuffer"></div>
+                <div id="displayBuffer"></div></form>
             </div>
             <script>
                 document.getElementById('tinhTheTich').addEventListener('click', function () {
+                    event.preventDefault();
                     let c1 = 216,
                         v1 = 100,
                         c2 = parseInt(document.getElementById('nongDoMoi').value),
@@ -39,15 +41,17 @@
             <div class="col-6">
                 <h2>Cách pha loãng về các nồng độ sử dụng trong PCR</h2>
                 <p>Nhập thể tích Buffer cần pha và nồng độ</p>
+                <form>
                 <div class="input-group">
                     <input type="text" class="form-control" placeholder="thể tích Buffer" id="theTichPha">
                     <input type="text" class="form-control" placeholder="nồng độ" id="nongDoPha">
-                    <button class="btn btn-primary" type="button" id="tongHop">Xem cách pha</button>
-                </div>
+                    <button class="btn btn-primary" type="submit" id="tongHop">Xem cách pha</button>
+                </div></form>
                 <div id="displayTongHop"></div>
             </div>
             <script>
                 document.getElementById('tongHop').addEventListener('click', function () {
+                    event.preventDefault();
                     let c1 = 100,
                         v1 = 0,
                         c2 = parseInt(document.getElementById('nongDoPha').value),
