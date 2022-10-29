@@ -18,12 +18,13 @@
                 <h2>Cách pha loãng các oligo ở các nồng độ khác nhau về các nồng độ đồng nhất</h2>
                 <p>Nhập nồng độ tuỳ chỉnh(đơn vị: pmol/µl)</p>
                 <form>
-                <div class="input-group mb-3">
-                    <input type="text" class="form-control" placeholder="ví dụ: 216" id="nongDoMoi"
-                        aria-describedby="tinhThetich">
-                    <button class="btn btn-primary" type="submit" id="tinhTheTich">Xem thể tích Buffer</button>
-                </div>
-                <div id="displayBuffer"></div></form>
+                    <div class="input-group mb-3">
+                        <input type="text" class="form-control" placeholder="ví dụ: 216" id="nongDoMoi"
+                            aria-describedby="tinhThetich">
+                        <button class="btn btn-primary" type="submit" id="tinhTheTich">Xem thể tích Buffer</button>
+                    </div>
+                    <div id="displayBuffer"></div>
+                </form>
             </div>
             <script>
                 document.getElementById('tinhTheTich').addEventListener('click', function () {
@@ -42,11 +43,12 @@
                 <h2>Cách pha loãng về các nồng độ sử dụng trong PCR</h2>
                 <p>Nhập thể tích Buffer cần pha và nồng độ</p>
                 <form>
-                <div class="input-group">
-                    <input type="text" class="form-control" placeholder="thể tích Buffer" id="theTichPha">
-                    <input type="text" class="form-control" placeholder="nồng độ" id="nongDoPha">
-                    <button class="btn btn-primary" type="submit" id="tongHop">Xem cách pha</button>
-                </div></form>
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="thể tích Buffer" id="theTichPha">
+                        <input type="text" class="form-control" placeholder="nồng độ" id="nongDoPha">
+                        <button class="btn btn-primary" type="submit" id="tongHop">Xem cách pha</button>
+                    </div>
+                </form>
                 <div id="displayTongHop"></div>
             </div>
             <script>
@@ -56,10 +58,10 @@
                         v1 = 0,
                         c2 = parseInt(document.getElementById('nongDoPha').value),
                         v2 = parseInt(document.getElementById('theTichPha').value);
-                    v1 =( c2 * v2 / c1);
+                    v1 = (c2 * v2 / c1);
                     document.getElementById('displayTongHop').innerHTML = '<p>Với nồng độ ' + c2 + 'pmol/µl và thể tích sau khi pha loãng ' + v2
-                        + 'µl.Thể tích Oligo cần lấy trong stock <strong>' + v1 + 'µl</strong>, Thể tích Buffer pha loãng cần dùng <strong>' +( v2 - v1) + 'µl</strong>';
-                        console.log(v1,(v2-v1));
+                        + 'µl.Thể tích Oligo cần lấy trong stock <strong>' + v1 + 'µl</strong>, Thể tích Buffer pha loãng cần dùng <strong>' + (v2 - v1) + 'µl</strong>';
+                    console.log(v1, (v2 - v1));
                 })
             </script>
         </div>

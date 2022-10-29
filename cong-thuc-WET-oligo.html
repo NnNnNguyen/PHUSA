@@ -11,24 +11,96 @@
 </head>
 
 <body>
-    <div class="container text-center">
+    <div class="container text-center mt-5">
         <div class="row justify-content-start">
             <div class="col-12">
                 <h2>CÔNG THỨC TÍNH TOÁN WET OLIGO</h2>
-                <div class="input-group">
-                    <input type="text" class="form-control" placeholder="Tên" id="OligoName">
-                    <input type="text" class="form-control" placeholder="Trình tự 5' đến 3'" id="Sequence">
-                    <input type="text" class="form-control" placeholder="OD" id="OD">
-                    <input type="text" class="form-control" placeholder="Volumne delivered " id="">
-                    <input type="text" class="form-control" placeholder="" id="">
-                    <input type="text" class="form-control" placeholder="" id="">
-                    <input type="text" class="form-control" placeholder="" id="">
-                    <button class="btn btn-primary" type="button" id="ketQuaWet">Xem kết quả</button>
-                </div>
-                <div id="displayWet"></div>
+                <form>
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Tên" id="oligoName">
+                        <input type="text" class="form-control" placeholder="Trình tự 5' đến 3'" id="sequence">
+                        <input type="text" class="form-control" placeholder="OD" id="OD">
+                        <input type="text" class="form-control" placeholder="Volumne delivered " id="volumne">
+                        <input type="text" class="form-control" placeholder="Conc. Wanted (pmol/µl)" id="concWanted">
+                        <input type="text" class="form-control" placeholder="Conc. WS (pmol/µl)" id="concWS">
+                        <input type="text" class="form-control" placeholder="Vol. (µl) of WS" id="volWS">
+                        <button class="btn btn-primary" type="button" id="ketQuaWet">Xem kết quả</button>
+                </form>
             </div>
+            <div id="displayWet"></div>
         </div>
     </div>
+    </div>
+    <table>
+        <tr>
+            <td></td>
+        </tr>
+    </table>
+    <script>
+        var mangInp = [],
+            mangTrinhTu = [],
+            ten = document.getElementById('oligoName'),
+                trinhTu = document.getElementById('sequence'),
+                OD = document.getElementById('OD'),
+                volumne = document.getElementById('volumne'),
+                concWanted = document.getElementById('concWanted'),
+                concWS = document.getElementById('concWS'),
+                volWS = document.getElementById('volWS');
+               
+        document.getElementById('ketQuaWet').addEventListener('click', function () {
+            var oligoConc, Mer, Mw, Tm, addedToODV, fromSS, ofbuffer;
+            mangTrinhTu = trinhTu.value.toUpperCase().replace(/\s/g, "").split('');
+            console.log(mangTrinhTu);
+            themHang(ten.value, trinhTu.value, OD.value, volumne.value, concWanted.value, concWS.value, volWS.value);
+            console.log(mangInp);
+            hienThi();
+            ten.value = '';
+            trinhTu.value = '';
+            OD.value = '';
+            volumne.value = '';
+            concWanted.value = '';
+            concWS.value = '';
+            volWS.value = '';
+        })
+        function hienThi() {
+            // let text = '';
+            text = `<table class="table table-bordered table-striped">
+                    <tr>
+                        <td>Oligo Name</td>
+                        <td>Sequence (5 to 3)</td>
+                        <td>OD delivered</td>
+                        <td>Volumne delivered </td>
+                        <td>Oligo conc. delivered (pmol/µl)</td>
+                        <td>Mer</td>
+                        <td>Mw</td>
+                        <td>Tm</td>
+                        <td>Conc. Wanted (pmol/µl)</td>
+                        <td>Vol. (µl) of buffer to be added to ODV</td>
+                        <td>Conc. WS (pmol/µl)</td><td>Vol. (µl) of WS</td>
+                        <td>Vol. (µl) from SS</td>
+                        <td>Vol. (µl) of buffer</td>
+                    </tr>`;
+            text += `<tr>
+                <td>${mangInp[0]}</td>
+                <td>${mangInp[1]}</td>
+                <td>${mangInp[2]}</td>
+                <td>${mangInp[3]}</td>
+                <td>`
+            document.getElementById('displayWet').innerHTML = text;
+        }
+        function themHang(n1, n2, n3, n4, n5, n6, n7) {
+            mangInp = [];
+            if (n1 != '' && n2 != '' && n3 != '' && n4 != '' && n5 != '' && n6 != '' && n7 != '') {
+                mangInp.push(n1);
+                mangInp.push(n2);
+                mangInp.push(n3);
+                mangInp.push(n4);
+                mangInp.push(n5);
+                mangInp.push(n6);
+                mangInp.push(n7);
+            }
+        }
+    </script>
 </body>
 
 </html>
