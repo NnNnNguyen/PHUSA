@@ -16,10 +16,17 @@
             <!-- Cách pha loãng các oligo ở các nồng độ khác nhau về các nồng độ đồng nhất -->
             <div class="col-6">
                 <h2>Cách pha loãng các oligo ở các nồng độ khác nhau về các nồng độ đồng nhất</h2>
-                <p>Nhập nồng độ tuỳ chỉnh(đơn vị: pmol/µl)</p>
                 <form>
+                    <p>Nhập nồng độ và thể tích ban đầu(đơn vị: pmol/µl)</p>
                     <div class="input-group mb-3">
-                        <input type="text" class="form-control" placeholder="ví dụ: 216" id="nongDoMoi"
+                        <input type="text" class="form-control" placeholder="Nồng độ ban đầu" id="nongDoBD"
+                            aria-describedby="tinhThetich">
+                        <input type="text" class="form-control" placeholder="Thể tích ban đầu" id="theTichBD"
+                            aria-describedby="tinhThetich">
+                    </div>
+                    <p>Nhập nồng độ tuỳ chỉnh(đơn vị: pmol/µl)</p>
+                    <div class="input-group mb-3">
+                        <input type="text" class="form-control" placeholder="Nồng độ tuỳ chỉnh" id="nongDoMoi"
                             aria-describedby="tinhThetich">
                         <button class="btn btn-primary" type="submit" id="tinhTheTich">Xem thể tích Buffer</button>
                     </div>
@@ -27,15 +34,20 @@
                 </form>
             </div>
             <script>
+                var c1 = document.getElementById('nongDoBD'),
+                    v1 = document.getElementById('theTichBD'),
+                    c2 = document.getElementById('nongDoMoi'),
+                    v2 = 0;
                 document.getElementById('tinhTheTich').addEventListener('click', function () {
                     event.preventDefault();
-                    let c1 = 216,
-                        v1 = 100,
-                        c2 = parseInt(document.getElementById('nongDoMoi').value),
-                        v2 = 0;
-                    console.log(c2);
-                    v2 = (c1 * v1 / c2) - v1;
-                    document.getElementById('displayBuffer').innerHTML = '<p>Với nồng độ ' + c2 + 'pmol/µl bạn cần <strong>' + v2 + 'µl</strong> ';
+                    v2 = (parseInt(c1.value) * parseInt(v1.value) / parseInt(c2.value)) - parseInt(v1.value);
+                    document.getElementById('displayBuffer').innerHTML = `<ul><li>Nồng độ gốc: ${c1.value}pmol/µl</li>
+                        <li>Thể tích ban đầu: ${v1.value}µl</li>
+                        <li>Nồng độ tuỳ chỉnh: ${c2.value}pmol/µl</li>
+                        <li><strong>Thể tích Buffer cần thêm:<span style = "color:#ff0000"> ${v2}µl</span></strong>`;
+                    c1.value = '';
+                    v1.value = '';
+                    c2.value = '';
                 })
             </script>
             <!-- Cách pha loãng về các nồng độ sử dụng trong PCR -->
