@@ -17,14 +17,14 @@
             <div class="col-6">
                 <h2>Cách pha loãng các oligo ở các nồng độ khác nhau về các nồng độ đồng nhất</h2>
                 <form>
-                    <p>Nhập nồng độ và thể tích ban đầu(đơn vị: pmol/µl)</p>
+                    <p>Nhập nồng độ và thể tích ban đầu</p>
                     <div class="input-group mb-3">
                         <input type="text" class="form-control" placeholder="Nồng độ ban đầu" id="nongDoBD"
                             aria-describedby="tinhThetich">
                         <input type="text" class="form-control" placeholder="Thể tích ban đầu" id="theTichBD"
                             aria-describedby="tinhThetich">
                     </div>
-                    <p>Nhập nồng độ tuỳ chỉnh(đơn vị: pmol/µl)</p>
+                    <p>Nhập nồng độ tuỳ chỉnh</p>
                     <div class="input-group mb-3">
                         <input type="text" class="form-control" placeholder="Nồng độ tuỳ chỉnh" id="nongDoMoi"
                             aria-describedby="tinhThetich">
@@ -53,27 +53,38 @@
             <!-- Cách pha loãng về các nồng độ sử dụng trong PCR -->
             <div class="col-6">
                 <h2>Cách pha loãng về các nồng độ sử dụng trong PCR</h2>
-                <p>Nhập thể tích Buffer cần pha và nồng độ</p>
                 <form>
-                    <div class="input-group">
-                        <input type="text" class="form-control" placeholder="thể tích Buffer" id="theTichPha">
-                        <input type="text" class="form-control" placeholder="nồng độ" id="nongDoPha">
+                    <p>Nhập nồng độ ban đầu và nồng độ sau khi pha</p>
+                    <div class="input-group mb-3">
+                        <input type="text" class="form-control" placeholder="Nồng độ ban đầu" id="nongDoGoc">
+                        <input type="text" class="form-control" placeholder="Nồng độ sau khi pha" id="nongDoPha">
+
+                    </div>
+                    <p>Thể tích sau khi pha loãng</p>
+                    <div class="input-group mb-3">
+                        <input type="text" class="form-control" placeholder="Thể tích sau khi pha" id="theTichSau">
                         <button class="btn btn-primary" type="submit" id="tongHop">Xem cách pha</button>
                     </div>
                 </form>
                 <div id="displayTongHop"></div>
             </div>
             <script>
+                var c1 = document.getElementById('nongDoGoc'),
+                    c2 = document.getElementById('nongDoPha'),
+                    v2 = document.getElementById('theTichSau'),
+                    v1 = 0;
                 document.getElementById('tongHop').addEventListener('click', function () {
                     event.preventDefault();
-                    let c1 = 100,
-                        v1 = 0,
-                        c2 = parseInt(document.getElementById('nongDoPha').value),
-                        v2 = parseInt(document.getElementById('theTichPha').value);
-                    v1 = (c2 * v2 / c1);
-                    document.getElementById('displayTongHop').innerHTML = '<p>Với nồng độ ' + c2 + 'pmol/µl và thể tích sau khi pha loãng ' + v2
-                        + 'µl.Thể tích Oligo cần lấy trong stock <strong>' + v1 + 'µl</strong>, Thể tích Buffer pha loãng cần dùng <strong>' + (v2 - v1) + 'µl</strong>';
-                    console.log(v1, (v2 - v1));
+                    v1 = (parseInt(c2.value) * parseInt(v2.value) / parseInt(c1.value));
+                    document.getElementById('displayTongHop').innerHTML = `<ul><li>Nồng độ ban đầu của Stock: ${c1.value}pmol/µl</li>
+                        <li>Nồng độ sau khi pha loãng: ${c2.value}pmol/µl</li>
+                        <li>Thể tích sau khi pha loãng: ${v2.value}µl</li>
+                        <li><strong>Thể tích Oligo cần lấy trong stock:<span style = "color:#ff0000"> ${v1}µl</span></strong></li>
+                        <li><strong> Thể tích Buffer pha loãng cần dùng <span style = "color:#ff0000">${(parseInt(v2.value) - v1)}µl</span><strong>`;
+
+                    c1.value = '';
+                    c2.value = '';
+                    v2.value = '';
                 })
             </script>
         </div>
