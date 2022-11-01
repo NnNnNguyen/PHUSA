@@ -8,16 +8,18 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
-    <title>WET Oligo</title>
+    <title>Công thức Dry Oligo</title>
 </head>
 <style>
     .table-wet {
         width: 100%;
     }
-    .table-wet td{
+
+    .table-wet td {
         max-width: 5%;
         word-wrap: break-word;
     }
+
     .table-wet td:nth-child(3) {
         max-width: 25rem;
         word-wrap: break-word;
@@ -29,25 +31,21 @@
     <div class="container text-center mt-5">
         <div class="row justify-content-start">
             <div class="col-12">
-                <h2>CÔNG THỨC TÍNH TOÁN WET OLIGO</h2>
+                <h2>Công thức Dry Oligo</h2>
                 <form>
                     <div class="container text-center">
                         <div class="row">
                             <div class="col col-2 px-1">
                                 <input type="text" class="form-control" placeholder="Tên" id="oligoName">
                             </div>
-                            <div class="col col-4 px-1">
+                            <div class="col col-5 px-1">
                                 <input type="text" class="form-control" placeholder="Trình tự 5' đến 3'" id="sequence">
                             </div>
                             <div class="col col-1 px-1">
                                 <input type="text" class="form-control" placeholder="OD" id="OD">
                             </div>
                             <div class="col col-1 px-1">
-                                <input type="text" class="form-control" placeholder="Volumne delivered " id="volumne">
-                            </div>
-                            <div class="col col-1 px-1">
-                                <input type="text" class="form-control" placeholder="Conc.Wanted (pmol/µl)"
-                                    id="concWanted">
+                                <input type="text" class="form-control" placeholder="Conc. SS(pmol/µl)" id="ConcSS">
                             </div>
                             <div class="col col-1 px-1">
                                 <input type="text" class="form-control" placeholder="Conc.WS (pmol/µl)" id="concWS">
@@ -58,9 +56,10 @@
                             <div class="col col-1 px-1">
                                 <div class="d-grid gap-2">
                                     <button class="btn btn-primary" type="button" id="ketQuaWet">Thêm</button>
-                                    <button class="btn btn-primary" type="button" id="suaXong" style="display: none;">Sửa
+                                    <button class="btn btn-primary" type="button" id="suaXong"
+                                        style="display: none;">Sửa
                                         xong</button>
-                                  </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -69,7 +68,7 @@
             <div class="container text-start mt-3" id="huongDanChuoi"> </div>
             <div class="container text-start " id="huongDan"> </div>
             <div>
-                <h2>WET OLIGO</h2>
+                <h2>Dry Oligo</h2>
             </div>
             <div id="displayWet"></div>
         </div>
@@ -82,12 +81,11 @@
             ten = document.getElementById('oligoName'),
             trinhTu = document.getElementById('sequence'),
             OD = document.getElementById('OD'),
-            volumne = document.getElementById('volumne'),
-            concWanted = document.getElementById('concWanted'),
+            ConcSS = document.getElementById('ConcSS'),
             concWS = document.getElementById('concWS'),
             volWS = document.getElementById('volWS'),
             edit = A = G = C = T = 0,
-            oligoConc, Mer, Mw, Tm, addedToODV, fromSS, ofbuffer;
+            amount, Mer, Mw, Tm, addedToODV, fromSS, ofbuffer;
         // Xử lý chuỗi trình tự
         trinhTu.addEventListener('keyup', function () {
             trinhTu.value = trinhTu.value.toUpperCase().replace(/\s/g, "");
@@ -124,14 +122,14 @@
         }
         // hàm xử lý trả kết quả
         document.getElementById('ketQuaWet').addEventListener('click', function () {
-            if (ten.value != '' && trinhTu.value != '' && OD.value != '' && volumne.value != '' && concWanted.value != '' && concWS.value != '' && volWS.value != '') {
+            if (ten.value != '' && trinhTu.value != '' && OD.value != '' && ConcSS.value != '' && concWS.value != '' && volWS.value != '') {
                 document.getElementById('huongDan').innerHTML = '';
                 mangTrinhTu = trinhTu.value.split('');
                 trinhTuA();
-                themHang(ten.value, trinhTu.value, OD.value, volumne.value, concWanted.value, concWS.value, volWS.value);
+                themHang(ten.value, trinhTu.value, OD.value, ConcSS.value, concWS.value, volWS.value);
                 mangTotal.push(mangInp);
                 hienThi();
-                ten.value = trinhTu.value = OD.value = volumne.value = concWanted.value = concWS.value = volWS.value = '';
+                ten.value = trinhTu.value = OD.value = ConcSS.value = concWS.value = volWS.value = '';
                 console.log(mangTotal);
                 console.log(mangTrinhTu);
                 console.log(G, C, A, T);
@@ -149,17 +147,16 @@
                                <th scope="col" >Oligo Name</th>
                                <th scope="col">Sequence (5' to 3')</th>
                                <th scope="col">OD delivered</th>
-                               <th scope="col">Volumne delivered </th>
-                               <th scope="col">Oligo conc. delivered (pmol/µl)</th>
+                               <th scope="col">Amount of oligo (nmol)</th>
                                <th scope="col">Mer</th>
                                <th scope="col">Mw</th>
                                <th scope="col">Tm</th>
-                               <th scope="col">Conc. Wanted (pmol/µl)</th>
+                               <th scope="col">Conc. SS (pmol/µl)</th>
                                <th scope="col">Vol.(µl) of buffer to be added to ODV</th>
                                <th scope="col">Conc.WS (pmol/µl)</th>
-                               <th scope="col">Vol.(µl) of WS</th>
-                               <th scope="col">Vol.(µl) from SS</th>
-                               <th scope="col">Vol.(µl) of buffer</th>
+                               <th scope="col">Vol.(µl) of WS (Vws)</th>
+                               <th scope="col">Vol.(µl) from SS (Vss)</th>
+                               <th scope="col">Vol.(µl) of buffer (Vb)</th>
                                <th scope="col" colspan="2">edit</th>
                            </tr>`;
             for (let i = 0; i < mangTotal.length; i++) {
@@ -241,49 +238,49 @@
             return A, T, G, C;
         }
         // thêm 1 hàng
-        function themHang(n1, n2, n3, n4, n9, n11, n12) {
+        function themHang(n1, n2, n3, n8, n10, n11) {
             mangInp = [];
-            if (n1 != '' && n2 != '' && n3 != '' && n4 != '' && n9 != '' && n11 != '' && n12 != '') {
-                mangInp.push(n1, n2, n3, n4, MyoligoConc(), mangTrinhTu.length, MyMw(), MyTm(), n9, MyaddedToODV(), n11, n12, MyfromSS(), Myofbuffer());
+            if (n1 != '' && n2 != '' && n3 != '' && n8 != '' && n10 != '' && n11 != '') {
+                mangInp.push(n1, n2, n3, Myamount(), mangTrinhTu.length, MyMw(), MyTm(), n8, MyaddedToODV(), n10, n11, MyfromSS(), Myofbuffer());
             }
             return mangInp;
         }
-        // các cột tính bao gồm (5), (6), (7), (8), (10), (13), (14)
-        function MyoligoConc() {
-            let n5 = 0;
-            n5 = ((100 * parseInt(OD.value)) / (1.52 * A + 1.201 * G + 0.705 * C + 0.84 * T)) / (parseInt(volumne.value) / 1000);
-            n5 = n5.toFixed(1);
-            return n5;
+        // các cột tính bao gồm (4), (5),(6), (7), (9), (12), (13)
+        function Myamount() {
+            let n4 = 0;
+            n4 = ((100 * parseInt(OD.value)) / (1.52 * A + 1.201 * G + 0.705 * C + 0.84 * T));
+            n4 = n4.toFixed(2);
+            return n4;
         }
         function MyMw() {
+            let n6 = 0;
+            n6 = (313.21 * A + 329.21 * G + 289.18 * C + 304.2 * T) - 61.96;
+            n6 = n6.toFixed(1);
+            return n6;
+        }
+        function MyTm() {
             let n7 = 0;
-            n7 = (313.21 * A + 329.21 * G + 289.18 * C + 304.2 * T) - 61.96;
+            n7 = 100.5 + (41 * (G + C) / (A + T + G + C)) - (820 / (A + T + G + C)) + (16.6 * Math.log10(0.05));
             n7 = n7.toFixed(1);
             return n7;
         }
-        function MyTm() {
-            let n8 = 0;
-            n8 = 100.5 + (41 * (G + C) / (A + T + G + C)) - (820 / (A + T + G + C)) + (16.6 * Math.log10(0.05));
-            n8 = n8.toFixed(1);
-            return n8;
-        }
         function MyaddedToODV() {
-            let n10 = 0;
-            n10 = (MyoligoConc() * parseInt(volumne.value) / parseInt(concWanted.value)) - parseInt(volumne.value);
-            n10 = n10.toFixed(1);
-            return n10;
+            let n9 = 0;
+            n9 = Myamount() * 1000 / parseInt(ConcSS.value);
+            n9 = n9.toFixed();
+            return n9;
         }
         function MyfromSS() {
-            let n13 = 0;
-            n13 = parseInt(concWS.value) * parseInt(volWS.value) / parseInt(concWanted.value);
-            n13 = n13.toFixed(1);
-            return n13;
+            let n12 = 0;
+            n12 = parseInt(concWS.value) * parseInt(volWS.value) / parseInt(ConcSS.value);
+            n12 = n12.toFixed(1);
+            return n12;
         }
         function Myofbuffer() {
-            let n14 = 0;
-            n14 = parseInt(volWS.value) - MyfromSS();
-            n14 = n14.toFixed(1);
-            return n14;
+            let n13 = 0;
+            n13 = parseInt(volWS.value) - MyfromSS();
+            n13 = n13.toFixed(1);
+            return n13;
         }
         // tuỳ chỉnh sửa xoá
         function xoa(m) {
@@ -298,26 +295,25 @@
                 ten.value = mangTotal[m][0];
                 trinhTu.value = mangTotal[m][1];
                 OD.value = mangTotal[m][2];
-                volumne.value = mangTotal[m][3];
-                concWanted.value = mangTotal[m][8];
-                concWS.value = mangTotal[m][10];
-                volWS.value = mangTotal[m][11];
+                ConcSS.value = mangTotal[m][7];
+                concWS.value = mangTotal[m][9];
+                volWS.value = mangTotal[m][10];
                 mangTotal[m] = '';
             }
         }
         document.getElementById('suaXong').addEventListener('click', function () {
-            if (ten.value != '' && trinhTu.value != '' && OD.value != '' && volumne.value != '' && concWanted.value != '' && concWS.value != '' && volWS.value != '') {
+            if (ten.value != '' && trinhTu.value != '' && OD.value != '' && ConcSS.value != '' && concWS.value != '' && volWS.value != '') {
                 document.getElementById('huongDan').innerHTML = '';
                 for (let i = 0; i < mangTotal.length; i++) {
                     if (mangTotal[i] == '') {
                         mangTrinhTu = trinhTu.value.split('');
                         trinhTuA();
-                        themHang(ten.value, trinhTu.value, OD.value, volumne.value, concWanted.value, concWS.value, volWS.value);
+                        themHang(ten.value, trinhTu.value, OD.value, ConcSS.value, concWS.value, volWS.value);
                         mangTotal[i] = mangInp;
                     }
                 }
                 hienThi();
-                ten.value = trinhTu.value = OD.value = volumne.value = concWanted.value = concWS.value = volWS.value = '';
+                ten.value = trinhTu.value = OD.value = ConcSS.value = concWS.value = volWS.value = '';
                 document.getElementById('ketQuaWet').style.display = "block";
                 document.getElementById('suaXong').style.display = "none";
                 edit = 0;
