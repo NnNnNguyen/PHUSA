@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
     <title>WET Oligo</title>
 </head>
 
@@ -20,11 +20,11 @@
                     <div class="input-group mt-5">
                         <input type="text" class="form-control" placeholder="Tên" id="oligoName">
                         <input type="text" class="form-control" placeholder="Trình tự 5' đến 3'" id="sequence">
-                        <input type="text" class="form-control" placeholder="(so)OD" id="OD">
-                        <input type="text" class="form-control" placeholder="(so)Volumne delivered " id="volumne">
-                        <input type="text" class="form-control" placeholder="Conc. Wanted (pmol/µl)" id="concWanted">
-                        <input type="text" class="form-control" placeholder="Conc. WS (pmol/µl)" id="concWS">
-                        <input type="text" class="form-control" placeholder="(so)Vol. (µl) of WS" id="volWS">
+                        <input type="text" class="form-control" placeholder="OD" id="OD">
+                        <input type="text" class="form-control" placeholder="Volumne delivered " id="volumne">
+                        <input type="text" class="form-control" placeholder="Conc.Wanted (pmol/µl)" id="concWanted">
+                        <input type="text" class="form-control" placeholder="Conc.WS (pmol/µl)" id="concWS">
+                        <input type="text" class="form-control" placeholder="Vol.(µl) of WS" id="volWS">
                         <button class="btn btn-primary" type="button" id="ketQuaWet">Thêm</button>
                         <button class="btn btn-primary" type="button" id="suaXong" style="display: none;">Sửa
                             xong</button>
@@ -50,7 +50,7 @@
             concWanted = document.getElementById('concWanted'),
             concWS = document.getElementById('concWS'),
             volWS = document.getElementById('volWS'),
-            A = T = G = C = 0,
+            edit = A = G = C = T = 0,
             oligoConc, Mer, Mw, Tm, addedToODV, fromSS, ofbuffer;
         // chuỗi trình tự
         trinhTu.addEventListener('keyup', function () {
@@ -68,16 +68,17 @@
                 // mangTrinhTu = [];
                 console.log(mangTotal);
                 console.log(mangTrinhTu);
+                console.log(G, C, A, T);
             } else {
                 document.getElementById('huongDan').innerHTML = `<p style="color: #ff0000" >Có thể 1 hoặc nhiều ô bạn đã bỏ trống </p>`
             }
         })
         function hienThi() {
-            let text = '', count = 0;
+            let text = '', count = 0, edit = 0;
             document.getElementById('displayWet').innerHTML = '';
             text = `<table class="table table-striped table-hover table-sm align-middle">
                            <tr>
-                               <th><i class="bi-alarm"></i> STT</th>
+                               <th> STT</th>
                                <th>Oligo Name</th>
                                <th>Sequence (5' to 3')</th>
                                <th>OD delivered</th>
@@ -100,22 +101,73 @@
                 for (let j = 0; j < mangTotal[i].length; j++) {
                     text += `<td>${mangTotal[i][j]}</td>`
                 }
-                text += `<td> <button class="btn btn-link " onclick="sua(${i})">&#9999;</button></td>
+                text += `<td><button class="btn btn-link " onclick="sua(${i})" id="btn-sua">&#9999;</button></td>
                 <td><button class="btn btn-link " onclick="xoa(${i})">&#10006;</button></td></tr>`
             }
             document.getElementById('displayWet').innerHTML += text;
         }
         function trinhTuA() {
-            let A = T = G = C = 0;
+            A = G = C = T = 0;
             for (let i = 0; i < mangTrinhTu.length; i++) {
-                if (mangTrinhTu[i] == 'A') {
-                    A++;
-                } if (mangTrinhTu[i] == 'T') {
-                    T++;
-                } if (mangTrinhTu[i] == 'G') {
-                    G++;
-                } if (mangTrinhTu[i] == 'C') {
-                    C++;
+                switch (mangTrinhTu[i]) {
+                    case 'A':
+                        A++;
+                        break;
+                    case 'G':
+                        G++;
+                        break;
+                    case 'C':
+                        C++;
+                        break;
+                    case 'T':
+                        T++;
+                        break;
+                    case 'Y':
+                        C++;
+                        T++;
+                        break;
+                    case 'R':
+                        A++;
+                        G++;
+                        break;
+                    case 'W':
+                        A++;
+                        T++;
+                        break;
+                    case 'S':
+                        G++;
+                        C++;
+                        break;
+                    case 'K':
+                        T++;
+                        G++;
+                        break;
+                    case 'M':
+                        C++;
+                        A++;
+                        break;
+                    case 'D':
+                        A++;
+                        G++;
+                        T++;
+                        break;
+                    case 'V':
+                        A++;
+                        C++;
+                        G++;
+                        break;
+                    case 'H':
+                        A++;
+                        C++;
+                        T++;
+                        break;
+                    case 'B':
+                        C++;
+                        G++;
+                        T++;
+                        break;
+                    default:
+                        break;
                 }
             }
             return A, T, G, C;
@@ -171,20 +223,23 @@
             hienThi();
         }
         function sua(m) {
-            document.getElementById('ketQuaWet').style.display = "none";
-            document.getElementById('suaXong').style.display = "block";
-            ten.value = mangTotal[m][0];
-            trinhTu.value = mangTotal[m][1];
-            OD.value = mangTotal[m][2];
-            volumne.value = mangTotal[m][3];
-            concWanted.value = mangTotal[m][8];
-            concWS.value = mangTotal[m][10];
-            volWS.value = mangTotal[m][11];
-            mangTotal[m]= '';
+            edit++;
+            if (edit == 1) {
+                document.getElementById('ketQuaWet').style.display = "none";
+                document.getElementById('suaXong').style.display = "block";
+                ten.value = mangTotal[m][0];
+                trinhTu.value = mangTotal[m][1];
+                OD.value = mangTotal[m][2];
+                volumne.value = mangTotal[m][3];
+                concWanted.value = mangTotal[m][8];
+                concWS.value = mangTotal[m][10];
+                volWS.value = mangTotal[m][11];
+                mangTotal[m] = '';
+            }
         }
         document.getElementById('suaXong').addEventListener('click', function () {
-
             if (ten.value != '' && trinhTu.value != '' && OD.value != '' && volumne.value != '' && concWanted.value != '' && concWS.value != '' && volWS.value != '') {
+                document.getElementById('huongDan').innerHTML = '';
                 for (let i = 0; i < mangTotal.length; i++) {
                     if (mangTotal[i] == '') {
                         mangTrinhTu = trinhTu.value.split('');
@@ -197,7 +252,10 @@
                 ten.value = trinhTu.value = OD.value = volumne.value = concWanted.value = concWS.value = volWS.value = '';
                 document.getElementById('ketQuaWet').style.display = "block";
                 document.getElementById('suaXong').style.display = "none";
+                edit = 0;
                 console.log(A, T, G, C);
+            } else {
+                document.getElementById('huongDan').innerHTML = `<p style="color: #ff0000" >Có thể 1 hoặc nhiều ô bạn đã bỏ trống </p>`
             }
         })
     </script>
