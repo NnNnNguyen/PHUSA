@@ -31,18 +31,19 @@
                     </div>
                 </form>
             </div>
-            <div class="container text-start mt-3" id="huongDan"> </div>
+            <div class="container text-start mt-3" id="huongDanChuoi"> </div>
+            <div class="container text-start " id="huongDan"> </div>
             <div>
                 <h2>WET OLIGO</h2>
             </div>
             <div id="displayWet"></div>
         </div>
     </div>
-    </div>
     <script>
         var mangInp = [],
             mangTrinhTu = [],
             mangTotal = [],
+            dkTrinhTu = ['A', 'T', 'C', 'G', 'Y', 'R', 'W', 'S', 'K', 'M', 'D', 'V', 'H', 'B',],
             ten = document.getElementById('oligoName'),
             trinhTu = document.getElementById('sequence'),
             OD = document.getElementById('OD'),
@@ -55,7 +56,37 @@
         // chuỗi trình tự
         trinhTu.addEventListener('keyup', function () {
             trinhTu.value = trinhTu.value.toUpperCase().replace(/\s/g, "");
+            validateInputArray(trinhTu.value, dkTrinhTu);
         })
+        function validateInputArray(input, list) {
+            let inputArr = input.split("");
+            let result;
+            let vitri = [];
+            for (let i = 0; i < inputArr.length; i++) {
+                let check = false;
+                for (let j = 0; j < list.length; j++) {
+                    if (inputArr[i] == list[j].toUpperCase()) {
+                        check = true;
+                    }
+                }
+                if (check == false) {
+                    vitri.push(inputArr[i]);
+                }
+            }
+            if (vitri.length > 0) {
+                let text = `<p style="color: #ff0000" > Chuỗi không hợp lệ tại vị trí: `;
+                text += vitri.join(', ');
+                result = text + '. </p>';
+                document.getElementById("ketQuaWet").disabled=true;
+                document.getElementById("suaXong").disabled=true;
+            } else {
+                result = '';
+                document.getElementById("ketQuaWet").disabled=false;
+                document.getElementById("suaXong").disabled=false;
+            }
+            document.getElementById('huongDanChuoi').innerHTML = result;
+            return result;
+        }
         document.getElementById('ketQuaWet').addEventListener('click', function () {
             if (ten.value != '' && trinhTu.value != '' && OD.value != '' && volumne.value != '' && concWanted.value != '' && concWS.value != '' && volWS.value != '') {
                 document.getElementById('huongDan').innerHTML = '';
@@ -70,7 +101,7 @@
                 console.log(mangTrinhTu);
                 console.log(G, C, A, T);
             } else {
-                document.getElementById('huongDan').innerHTML = `<p style="color: #ff0000" >Có thể 1 hoặc nhiều ô bạn đã bỏ trống </p>`
+                document.getElementById('huongDan').innerHTML = `<p style="color: #ff0000" >Có thể 1 hoặc nhiều ô bạn đã bỏ trống </p>`;
             }
         })
         function hienThi() {
@@ -253,7 +284,7 @@
                 document.getElementById('ketQuaWet').style.display = "block";
                 document.getElementById('suaXong').style.display = "none";
                 edit = 0;
-                console.log(A, T, G, C);
+                console.log(G, C, A, T);
             } else {
                 document.getElementById('huongDan').innerHTML = `<p style="color: #ff0000" >Có thể 1 hoặc nhiều ô bạn đã bỏ trống </p>`
             }
