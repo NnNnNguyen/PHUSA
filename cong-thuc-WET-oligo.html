@@ -14,10 +14,12 @@
     .table-wet {
         width: 100%;
     }
-    .table-wet td{
+
+    .table-wet td {
         max-width: 5%;
         word-wrap: break-word;
     }
+
     .table-wet td:nth-child(3) {
         max-width: 25rem;
         word-wrap: break-word;
@@ -58,16 +60,21 @@
                             <div class="col col-1 px-1">
                                 <div class="d-grid gap-2">
                                     <button class="btn btn-primary" type="button" id="ketQuaWet">Thêm</button>
-                                    <button class="btn btn-primary" type="button" id="suaXong" style="display: none;">Sửa
+                                    <button class="btn btn-primary" type="button" id="suaXong"
+                                        style="display: none;">Sửa
                                         xong</button>
-                                  </div>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </form>
             </div>
-            <div class="container text-start mt-3" id="huongDanChuoi"> </div>
-            <div class="container text-start " id="huongDan"> </div>
+            <div class="container text-start mt-3">
+                <p id="huongDanTen"></p>
+                <p id="huongDanChuoi"></p>
+                <p id="doDaiChuoi"></p>
+                <p id="huongDan"></p>
+            </div>
             <div>
                 <h2>WET OLIGO</h2>
             </div>
@@ -88,10 +95,35 @@
             volWS = document.getElementById('volWS'),
             edit = A = G = C = T = 0,
             oligoConc, Mer, Mw, Tm, addedToODV, fromSS, ofbuffer;
+
+        // Xử lý oligo name
+        ten.addEventListener('keyup', function () {
+            ten.value = removeVietnameseTones(ten.value);
+            if (ten.value.length > 12) {
+                document.getElementById('huongDanTen').innerHTML = `<p style="color: #ff0000" >Oligo name không được vượt quá 12 kí tự!`;
+                document.getElementById("ketQuaWet").disabled = true;
+                document.getElementById("suaXong").disabled = true;
+            } else {
+                document.getElementById('huongDanTen').innerHTML = '';
+                document.getElementById("ketQuaWet").disabled = false;
+                document.getElementById("suaXong").disabled = false;
+            }
+            console.log(ten.value);
+        })
         // Xử lý chuỗi trình tự
         trinhTu.addEventListener('keyup', function () {
             trinhTu.value = trinhTu.value.toUpperCase().replace(/\s/g, "");
             validateInputArray(trinhTu.value, dkTrinhTu);
+            if (trinhTu.value.length > 150) {
+                document.getElementById('doDaiChuoi').innerHTML = `<p style="color: #ff0000" >Tên chuỗi không được vượt quá 12 kí tự!`;
+                document.getElementById("ketQuaWet").disabled = true;
+                document.getElementById("suaXong").disabled = true;
+            } else {
+                document.getElementById('doDaiChuoi').innerHTML = '';
+                document.getElementById("ketQuaWet").disabled = false;
+                document.getElementById("suaXong").disabled = false;
+            }
+            console.log(ten.value.length);
         })
         function validateInputArray(input, list) {
             let inputArr = input.split("");
@@ -326,6 +358,35 @@
                 document.getElementById('huongDan').innerHTML = `<p style="color: #ff0000" >Có thể 1 hoặc nhiều ô bạn đã bỏ trống </p>`
             }
         })
+         //kiêm tra dấu tiêng việt
+        function removeVietnameseTones(str) {
+            str = str.replace(/à|á|ạ|ả|ã|â|ầ|ấ|ậ|ẩ|ẫ|ă|ằ|ắ|ặ|ẳ|ẵ/g, "a");
+            str = str.replace(/è|é|ẹ|ẻ|ẽ|ê|ề|ế|ệ|ể|ễ/g, "e");
+            str = str.replace(/ì|í|ị|ỉ|ĩ/g, "i");
+            str = str.replace(/ò|ó|ọ|ỏ|õ|ô|ồ|ố|ộ|ổ|ỗ|ơ|ờ|ớ|ợ|ở|ỡ/g, "o");
+            str = str.replace(/ù|ú|ụ|ủ|ũ|ư|ừ|ứ|ự|ử|ữ/g, "u");
+            str = str.replace(/ỳ|ý|ỵ|ỷ|ỹ/g, "y");
+            str = str.replace(/đ/g, "d");
+            str = str.replace(/À|Á|Ạ|Ả|Ã|Â|Ầ|Ấ|Ậ|Ẩ|Ẫ|Ă|Ằ|Ắ|Ặ|Ẳ|Ẵ/g, "A");
+            str = str.replace(/È|É|Ẹ|Ẻ|Ẽ|Ê|Ề|Ế|Ệ|Ể|Ễ/g, "E");
+            str = str.replace(/Ì|Í|Ị|Ỉ|Ĩ/g, "I");
+            str = str.replace(/Ò|Ó|Ọ|Ỏ|Õ|Ô|Ồ|Ố|Ộ|Ổ|Ỗ|Ơ|Ờ|Ớ|Ợ|Ở|Ỡ/g, "O");
+            str = str.replace(/Ù|Ú|Ụ|Ủ|Ũ|Ư|Ừ|Ứ|Ự|Ử|Ữ/g, "U");
+            str = str.replace(/Ỳ|Ý|Ỵ|Ỷ|Ỹ/g, "Y");
+            str = str.replace(/Đ/g, "D");
+            // Some system encode vietnamese combining accent as individual utf-8 characters
+            // Một vài bộ encode coi các dấu mũ, dấu chữ như một kí tự riêng biệt nên thêm hai dòng này
+            str = str.replace(/\u0300|\u0301|\u0303|\u0309|\u0323/g, ""); // ̀ ́ ̃ ̉ ̣  huyền, sắc, ngã, hỏi, nặng
+            str = str.replace(/\u02C6|\u0306|\u031B/g, ""); // ˆ ̆ ̛  Â, Ê, Ă, Ơ, Ư
+            // Remove extra spaces
+            // Bỏ các khoảng trắng liền nhau
+            str = str.replace(/ + /g, " ");
+            str = str.trim();
+            // Remove punctuations
+            // Bỏ dấu câu, kí tự đặc biệt
+            str = str.replace(/!|@|%|\^|\*|\(|\)|\+|\=|\<|\>|\?|\/|,|\.|\:|\;|\'|\"|\&|\#|\[|\]|~|\$|_|`|-|{|}|\||\\/g, " ");
+            return str;
+        }
     </script>
 </body>
 
