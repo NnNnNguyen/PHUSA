@@ -30,25 +30,30 @@
                             aria-describedby="tinhThetich">
                         <button class="btn btn-primary" type="submit" id="tinhTheTich">Xem thể tích Buffer</button>
                     </div>
+                    <div id="baoLoiBuffer"></div>
                     <div id="displayBuffer"></div>
                 </form>
             </div>
             <script>
-
                 document.getElementById('tinhTheTich').addEventListener('click', function () {
                     event.preventDefault();
                     let c1 = document.getElementById('nongDoBD'),
                         v1 = document.getElementById('theTichBD'),
                         c2 = document.getElementById('nongDoMoi'),
                         v2 = 0;
-                    v2 = (parseInt(c1.value) * parseInt(v1.value) / parseInt(c2.value)) - parseInt(v1.value);
-                    document.getElementById('displayBuffer').innerHTML = `<ul><li>Nồng độ gốc: ${c1.value}pmol/µl</li>
-                        <li>Thể tích ban đầu: ${v1.value}µl</li>
-                        <li>Nồng độ tuỳ chỉnh: ${c2.value}pmol/µl</li>
-                        <li><strong>Thể tích Buffer cần thêm:<span style = "color:#ff0000"> ${v2}µl</span></strong>`;
-                    c1.value = '';
-                    v1.value = '';
-                    c2.value = '';
+                    document.getElementById('baoLoiBuffer').innerHTML = '';
+                    if (c1.value != '', v1.value != '', c2.value != '') {
+                        v2 = (parseInt(c1.value) * parseInt(v1.value) / parseInt(c2.value)) - parseInt(v1.value);
+                        document.getElementById('displayBuffer').innerHTML = `<ul><li>Nồng độ gốc: ${c1.value}pmol/µl</li>
+                                <li>Thể tích ban đầu: ${v1.value}µl</li>
+                                <li>Nồng độ tuỳ chỉnh: ${c2.value}pmol/µl</li>
+                                <li><strong>Thể tích Buffer cần thêm:<span style = "color:#ff0000"> ${v2}µl</span></strong>`;
+                        c1.value = '';
+                        v1.value = '';
+                        c2.value = '';
+                    } else {
+                        document.getElementById('baoLoiBuffer').innerHTML = '<p style="color: #ff0000" >Bạn cần cung cấp đầy đủ thông tin!';
+                    }
                 })
             </script>
             <!-- Cách pha loãng về các nồng độ sử dụng trong PCR -->
@@ -67,6 +72,7 @@
                         <button class="btn btn-primary" type="submit" id="tongHop">Xem cách pha</button>
                     </div>
                 </form>
+                <div id="baoLoiTongHop"></div>
                 <div id="displayTongHop"></div>
             </div>
             <script>
@@ -77,16 +83,20 @@
                         c2 = document.getElementById('nongDoPha'),
                         v2 = document.getElementById('theTichSau'),
                         v1 = 0;
-                    v1 = (parseInt(c2.value) * parseInt(v2.value) / parseInt(c1.value));
-                    document.getElementById('displayTongHop').innerHTML = `<ul><li>Nồng độ ban đầu của Stock: ${c1.value}pmol/µl</li>
+                        document.getElementById('baoLoiTongHop').innerHTML = '';
+                    if (c1.value != '', v2.value != '', c2.value != '') {
+                        v1 = (parseInt(c2.value) * parseInt(v2.value) / parseInt(c1.value));
+                        document.getElementById('displayTongHop').innerHTML = `<ul><li>Nồng độ ban đầu của Stock: ${c1.value}pmol/µl</li>
                         <li>Nồng độ sau khi pha loãng: ${c2.value}pmol/µl</li>
                         <li>Thể tích sau khi pha loãng: ${v2.value}µl</li>
                         <li><strong>Thể tích Oligo cần lấy trong stock:<span style = "color:#ff0000"> ${v1}µl</span></strong></li>
                         <li><strong> Thể tích Buffer pha loãng cần dùng <span style = "color:#ff0000">${(v2.value - v1)}µl</span><strong>`;
-
-                    c1.value = '';
-                    c2.value = '';
-                    v2.value = '';
+                        c1.value = '';
+                        c2.value = '';
+                        v2.value = '';
+                    } else {
+                        document.getElementById('baoLoiTongHop').innerHTML = '<p style="color: #ff0000" >Bạn cần cung cấp đầy đủ thông tin!';
+                    }
                 })
             </script>
         </div>

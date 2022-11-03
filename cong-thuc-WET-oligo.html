@@ -198,15 +198,15 @@
         }
         // hàm xử lý trả kết quả
         document.getElementById('ketQuaWet').addEventListener('click', function () {
-                mangTrinhTu = trinhTu.value.split('');
-                trinhTuA();
-                themHang(ten.value, trinhTu.value, OD.value, volumne.value, concWanted.value, concWS.value, volWS.value);
-                mangTotal.push(mangInp);
-                hienThi();
-                ten.value = trinhTu.value = OD.value = volumne.value = concWanted.value = concWS.value = volWS.value = '';
-                console.log(mangTotal);
-                console.log(mangTrinhTu);
-                console.log(G, C, A, T);
+            mangTrinhTu = trinhTu.value.split('');
+            trinhTuA();
+            themHang(ten.value, trinhTu.value, OD.value, volumne.value, concWanted.value, concWS.value, volWS.value);
+            mangTotal.push(mangInp);
+            hienThi();
+            ten.value = trinhTu.value = OD.value = volumne.value = concWanted.value = concWS.value = volWS.value = '';
+            console.log(mangTotal);
+            console.log(mangTrinhTu);
+            console.log(G, C, A, T);
         })
         // Hàm hiển thi
         function hienThi() {
@@ -382,19 +382,19 @@
             }
         }
         document.getElementById('suaXong').addEventListener('click', function () {
-                for (let i = 0; i < mangTotal.length; i++) {
-                    if (mangTotal[i] == '') {
-                        mangTrinhTu = trinhTu.value.split('');
-                        trinhTuA();
-                        themHang(ten.value, trinhTu.value, OD.value, volumne.value, concWanted.value, concWS.value, volWS.value);
-                        mangTotal[i] = mangInp;
-                    }
+            for (let i = 0; i < mangTotal.length; i++) {
+                if (mangTotal[i] == '') {
+                    mangTrinhTu = trinhTu.value.split('');
+                    trinhTuA();
+                    themHang(ten.value, trinhTu.value, OD.value, volumne.value, concWanted.value, concWS.value, volWS.value);
+                    mangTotal[i] = mangInp;
                 }
-                hienThi();
-                ten.value = trinhTu.value = OD.value = volumne.value = concWanted.value = concWS.value = volWS.value = '';
-                document.getElementById('ketQuaWet').style.display = "block";
-                document.getElementById('suaXong').style.display = "none";
-                edit = 0;
+            }
+            hienThi();
+            ten.value = trinhTu.value = OD.value = volumne.value = concWanted.value = concWS.value = volWS.value = '';
+            document.getElementById('ketQuaWet').style.display = "block";
+            document.getElementById('suaXong').style.display = "none";
+            edit = 0;
         })
         //kiêm tra dấu tiêng việt
         function removeVietnameseTones(str) {
