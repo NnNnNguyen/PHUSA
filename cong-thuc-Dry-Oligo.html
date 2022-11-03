@@ -20,7 +20,6 @@
     }
 
     .table-wet td {
-        max-width: 5%;
         word-wrap: break-word;
     }
 
@@ -40,7 +39,7 @@
         <div class="row justify-content-start">
             <div class="col-12">
                 <h2>Công thức Dry Oligo</h2>
-                <table class="table table-striped table-sm align-middle table-wet table-bordered">
+                <table class="table table-striped table-hover table-sm align-middle table-wet table-bordered">
                     <thead>
                         <tr>
                             <th scope="col">№</th>
@@ -62,23 +61,23 @@
                     </thead>
                     <tbody id="displayDry"></tbody>
                     <tbody>
-                        <tr>
+                        <tr style="background: #d8e5fc;">
                             <td>...</td>
-                            <td scope="col"><input type="text" autocomplete="off" class="form-control" id="oligoName">
+                            <td scope="col"><input type="text" autocomplete="off" class="form-control" id="oligoName" autofocus>
                             </td>
                             <td scope="col"><input type="text" autocomplete="off" class="form-control" id="sequence">
                             </td>
-                            <td scope="col"><input type="number" autocomplete="off" class="form-control" id="OD"></td>
+                            <td scope="col"><input type="text" autocomplete="off" class="form-control" id="OD"></td>
                             <td scope="col">---</td>
                             <td scope="col">---</td>
                             <td scope="col">---</td>
                             <td scope="col">---</td>
-                            <td scope="col"> <input type="number" autocomplete="off" class="form-control" id="ConcSS">
+                            <td scope="col"> <input type="text" autocomplete="off" class="form-control" id="ConcSS">
                             </td>
                             <td scope="col">---</td>
-                            <td scope="col"> <input type="number" autocomplete="off" class="form-control" id="concWS">
+                            <td scope="col"> <input type="text" autocomplete="off" class="form-control" id="concWS">
                             </td>
-                            <td scope="col"><input type="number" autocomplete="off" class="form-control" id="volWS">
+                            <td scope="col"><input type="text" autocomplete="off" class="form-control" id="volWS">
                             </td>
                             <td scope="col">---</td>
                             <td scope="col">---</td>
@@ -228,6 +227,7 @@
             mangTotal.push(mangInp);
             hienThi();
             ten.value = trinhTu.value = OD.value = ConcSS.value = concWS.value = volWS.value = '';
+            ten.focus();
         })
         // Hàm hiển thi
         function hienThi() {
@@ -366,6 +366,7 @@
             mangTotal.splice(m, 1);
             edit = 0;
             hienThi();
+            ten.focus();
         }
         function sua(m) {
             edit++;
@@ -396,6 +397,7 @@
             document.getElementById('ketQuaDry').style.display = "block";
             document.getElementById('suaXong').style.display = "none";
             edit = 0;
+            ten.focus();
         })
 
         //kiêm tra dấu tiêng việt
