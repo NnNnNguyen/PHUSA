@@ -29,6 +29,10 @@
         word-wrap: break-word;
         text-align: left;
     }
+
+    .custom-tooltip {
+        --bs-tooltip-bg: var(--bs-primary);
+    }
 </style>
 
 <body>
@@ -41,22 +45,30 @@
                     <div class="container text-center">
                         <div class="row">
                             <div class="col col-2 px-1">
-                                <input type="text" class="form-control" placeholder="Tên" id="oligoName">
+                                <input type="text" autocomplete="off" class="form-control" placeholder="Tên" id="oligoName">
                             </div>
                             <div class="col col-5 px-1">
-                                <input type="text" class="form-control" placeholder="Trình tự 5' đến 3'" id="sequence">
+                                <input type="text" autocomplete="off" class="form-control" placeholder="Trình tự 5' đến 3'" id="sequence">
                             </div>
                             <div class="col col-1 px-1">
-                                <input type="number" class="form-control" placeholder="OD" id="OD">
+                                <input type="number" autocomplete="off" class="form-control" placeholder="OD" id="OD"
+                                    data-bs-toggle="tooltip" data-bs-placement="top"
+                                    data-bs-custom-class="custom-tooltip" data-bs-title="OD delivered">
                             </div>
                             <div class="col col-1 px-1">
-                                <input type="number" class="form-control" placeholder="Conc. SS(pmol/µl)" id="ConcSS">
+                                <input type="number" autocomplete="off" class="form-control" placeholder="Conc. SS(pmol/µl)" id="ConcSS"
+                                    data-bs-toggle="tooltip" data-bs-placement="top"
+                                    data-bs-custom-class="custom-tooltip" data-bs-title="Conc. SS (pmol/µl)">
                             </div>
                             <div class="col col-1 px-1">
-                                <input type="number" class="form-control" placeholder="Conc.WS (pmol/µl)" id="concWS">
+                                <input type="number" autocomplete="off" class="form-control" placeholder="Conc.WS (pmol/µl)" id="concWS"
+                                    data-bs-toggle="tooltip" data-bs-placement="top"
+                                    data-bs-custom-class="custom-tooltip" data-bs-title="Conc. WS (pmol/µl)">
                             </div>
                             <div class="col col-1 px-1">
-                                <input type="number" class="form-control" placeholder="Vol.(µl) of WS" id="volWS">
+                                <input type="number" autocomplete="off" class="form-control" placeholder="Vol.(µl) of WS" id="volWS" data-bs-toggle="tooltip" data-bs-placement="top"
+                                data-bs-custom-class="custom-tooltip"
+                                data-bs-title="Vol. (µl) of WS (Vws)">
                             </div>
                             <div class="col col-1 px-1">
                                 <div class="d-grid gap-2">
@@ -80,6 +92,12 @@
             <div id="displayDry"></div>
         </div>
     </div>
+    <script>
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl)
+        })
+    </script>
     <script>
         var mangInp = [],
             mangTrinhTu = [],
@@ -208,7 +226,7 @@
                            <tr>
                                <th scope="col">№</th>
                                <th scope="col" >Oligo Name</th>
-                               <th scope="col">Sequence (5' to 3')</th>
+                               <th scope="col" >Sequence (5' to 3')</th>
                                <th scope="col">OD delivered</th>
                                <th scope="col">Amount of oligo (nmol)</th>
                                <th scope="col">Mer</th>
