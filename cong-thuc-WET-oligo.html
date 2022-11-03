@@ -78,7 +78,7 @@
             <div>
                 <h2>WET OLIGO</h2>
             </div>
-            <div id="displayWet"></div>
+            <div id="displayQuaWet"></div>
         </div>
     </div>
     <script>
@@ -94,36 +94,33 @@
             concWS = document.getElementById('concWS'),
             volWS = document.getElementById('volWS'),
             edit = A = G = C = T = 0,
+            kiemTraTen = false, kiemTraChuoi = false,
             oligoConc, Mer, Mw, Tm, addedToODV, fromSS, ofbuffer;
+        document.getElementById("ketQuaWet").disabled = true;
+        document.getElementById("suaXong").disabled = true;
 
         // Xử lý oligo name
         ten.addEventListener('keyup', function () {
             ten.value = removeVietnameseTones(ten.value);
-            if (ten.value.length > 12) {
-                document.getElementById('huongDanTen').innerHTML = `<p style="color: #ff0000" >Oligo name không được vượt quá 12 kí tự!`;
-                document.getElementById("ketQuaWet").disabled = true;
-                document.getElementById("suaXong").disabled = true;
+            if (ten.value.length < 3) {
+                document.getElementById('huongDanTen').innerHTML = `<p style="color: #ff0000" >Oligo name phải từ 3 ký tự!`;
+                kiemTraTen = false;
             } else {
-                document.getElementById('huongDanTen').innerHTML = '';
-                document.getElementById("ketQuaWet").disabled = false;
-                document.getElementById("suaXong").disabled = false;
+                if (ten.value.length > 12) {
+                    document.getElementById('huongDanTen').innerHTML = `<p style="color: #ff0000" >Oligo name không được vượt quá 12 ký tự!`;
+                    kiemTraTen = false;
+                } else {
+                    document.getElementById('huongDanTen').innerHTML = '';
+                    kiemTraTen = true;
+                }
             }
-            console.log(ten.value);
+            kiemTraketQuaWet(kiemTraTen, kiemTraChuoi);
         })
+
         // Xử lý chuỗi trình tự
         trinhTu.addEventListener('keyup', function () {
             trinhTu.value = trinhTu.value.toUpperCase().replace(/\s/g, "");
             validateInputArray(trinhTu.value, dkTrinhTu);
-            if (trinhTu.value.length > 150) {
-                document.getElementById('doDaiChuoi').innerHTML = `<p style="color: #ff0000" >Tên chuỗi không được vượt quá 12 kí tự!`;
-                document.getElementById("ketQuaWet").disabled = true;
-                document.getElementById("suaXong").disabled = true;
-            } else {
-                document.getElementById('doDaiChuoi').innerHTML = '';
-                document.getElementById("ketQuaWet").disabled = false;
-                document.getElementById("suaXong").disabled = false;
-            }
-            console.log(ten.value.length);
         })
         function validateInputArray(input, list) {
             let inputArr = input.split("");
@@ -144,20 +141,63 @@
                 let text = `<p style="color: #ff0000" > Chuỗi không hợp lệ tại vị trí: `;
                 text += vitri.join(', ');
                 result = text + '. </p>';
-                document.getElementById("ketQuaWet").disabled = true;
-                document.getElementById("suaXong").disabled = true;
+                kiemTraChuoi = false;
+                if (inputArr.length < 3) {
+                    document.getElementById('doDaiChuoi').innerHTML = `<p style="color: #ff0000" >Chuỗi Oligo tối thiểu phải từ 3 base.!`;
+                } else {
+                    if (inputArr.length > 150) {
+                        document.getElementById('doDaiChuoi').innerHTML = `<p style="color: #ff0000" >Chuỗi không được vượt quá 150 base!`;
+                    } else {
+                        document.getElementById('doDaiChuoi').innerHTML = '';
+                    }
+                }
             } else {
+                if (inputArr.length < 3) {
+                    document.getElementById('doDaiChuoi').innerHTML = `<p style="color: #ff0000" >Chuỗi Oligo tối thiểu phải từ 3 base.!`;
+                    kiemTraChuoi = false;
+                } else {
+                    if (inputArr.length > 150) {
+                        document.getElementById('doDaiChuoi').innerHTML = `<p style="color: #ff0000" >Chuỗi không được vượt quá 150 base!`;
+                        kiemTraChuoi = false;
+                    } else {
+                        document.getElementById('doDaiChuoi').innerHTML = '';
+                        kiemTraChuoi = true;
+                    }
+                }
                 result = '';
-                document.getElementById("ketQuaWet").disabled = false;
-                document.getElementById("suaXong").disabled = false;
             }
+            kiemTraketQuaWet(kiemTraTen, kiemTraChuoi);
             document.getElementById('huongDanChuoi').innerHTML = result;
             return result;
         }
+        //kiểm tra input OD, volumne, concWanted, concWS, volWS
+        OD.addEventListener('keyup', function () {
+            kiemTraketQuaWet(kiemTraTen, kiemTraChuoi);
+        })
+        volumne.addEventListener('keyup', function () {
+            kiemTraketQuaWet(kiemTraTen, kiemTraChuoi);
+        })
+        concWanted.addEventListener('keyup', function () {
+            kiemTraketQuaWet(kiemTraTen, kiemTraChuoi);
+        })
+        concWS.addEventListener('keyup', function () {
+            kiemTraketQuaWet(kiemTraTen, kiemTraChuoi);
+        })
+        volWS.addEventListener('keyup', function () {
+            kiemTraketQuaWet(kiemTraTen, kiemTraChuoi);
+        })
+        //kiểm tra đk nhập
+        function kiemTraketQuaWet(name, string) {
+            if (name == true && string == true && OD.value != '' && volumne.value != '' && concWanted.value != '' && concWS.value != '' && volWS.value != '') {
+                document.getElementById("ketQuaWet").disabled = false;
+                document.getElementById("suaXong").disabled = false;
+            } else {
+                document.getElementById("ketQuaWet").disabled = true;
+                document.getElementById("suaXong").disabled = true;
+            }
+        }
         // hàm xử lý trả kết quả
         document.getElementById('ketQuaWet').addEventListener('click', function () {
-            if (ten.value != '' && trinhTu.value != '' && OD.value != '' && volumne.value != '' && concWanted.value != '' && concWS.value != '' && volWS.value != '') {
-                document.getElementById('huongDan').innerHTML = '';
                 mangTrinhTu = trinhTu.value.split('');
                 trinhTuA();
                 themHang(ten.value, trinhTu.value, OD.value, volumne.value, concWanted.value, concWS.value, volWS.value);
@@ -167,14 +207,11 @@
                 console.log(mangTotal);
                 console.log(mangTrinhTu);
                 console.log(G, C, A, T);
-            } else {
-                document.getElementById('huongDan').innerHTML = `<p style="color: #ff0000" >Có thể 1 hoặc nhiều ô bạn đã bỏ trống </p>`;
-            }
         })
         // Hàm hiển thi
         function hienThi() {
             let text = '', count = 0, edit = 0;
-            document.getElementById('displayWet').innerHTML = '';
+            document.getElementById('displayQuaWet').innerHTML = '';
             text = `<table class="table table-striped table-hover table-sm align-middle table-wet">
                            <tr>
                                <th scope="col">№</th>
@@ -203,7 +240,9 @@
                 text += `<td><button class="btn btn-link " onclick="sua(${i})" id="btn-sua"><i class="bi bi-pencil"></i></button></td>
                 <td><button class="btn btn-link " onclick="xoa(${i})"><i class="bi bi-trash"></i></button></td></tr>`
             }
-            document.getElementById('displayWet').innerHTML += text;
+            document.getElementById('displayQuaWet').innerHTML += text;
+            document.getElementById("ketQuaWet").disabled = true;
+            document.getElementById("suaXong").disabled = true;
         }
         // Hàm xử lý base 
         function trinhTuA() {
@@ -320,6 +359,10 @@
         // tuỳ chỉnh sửa xoá
         function xoa(m) {
             mangTotal.splice(m, 1);
+            ten.value = trinhTu.value = OD.value = volumne.value = concWanted.value = concWS.value = volWS.value = '';
+            document.getElementById('ketQuaWet').style.display = "block";
+            document.getElementById('suaXong').style.display = "none";
+            edit = 0;
             hienThi();
         }
         function sua(m) {
@@ -335,11 +378,10 @@
                 concWS.value = mangTotal[m][10];
                 volWS.value = mangTotal[m][11];
                 mangTotal[m] = '';
+                kiemTraketQuaWet(kiemTraTen, kiemTraChuoi);
             }
         }
         document.getElementById('suaXong').addEventListener('click', function () {
-            if (ten.value != '' && trinhTu.value != '' && OD.value != '' && volumne.value != '' && concWanted.value != '' && concWS.value != '' && volWS.value != '') {
-                document.getElementById('huongDan').innerHTML = '';
                 for (let i = 0; i < mangTotal.length; i++) {
                     if (mangTotal[i] == '') {
                         mangTrinhTu = trinhTu.value.split('');
@@ -353,12 +395,8 @@
                 document.getElementById('ketQuaWet').style.display = "block";
                 document.getElementById('suaXong').style.display = "none";
                 edit = 0;
-                console.log(G, C, A, T);
-            } else {
-                document.getElementById('huongDan').innerHTML = `<p style="color: #ff0000" >Có thể 1 hoặc nhiều ô bạn đã bỏ trống </p>`
-            }
         })
-         //kiêm tra dấu tiêng việt
+        //kiêm tra dấu tiêng việt
         function removeVietnameseTones(str) {
             str = str.replace(/à|á|ạ|ả|ã|â|ầ|ấ|ậ|ẩ|ẫ|ă|ằ|ắ|ặ|ẳ|ẵ/g, "a");
             str = str.replace(/è|é|ẹ|ẻ|ẽ|ê|ề|ế|ệ|ể|ễ/g, "e");
