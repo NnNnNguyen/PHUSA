@@ -47,16 +47,16 @@
                                 <input type="text" class="form-control" placeholder="Trình tự 5' đến 3'" id="sequence">
                             </div>
                             <div class="col col-1 px-1">
-                                <input type="text" class="form-control" placeholder="OD" id="OD">
+                                <input type="number" class="form-control" placeholder="OD" id="OD">
                             </div>
                             <div class="col col-1 px-1">
-                                <input type="text" class="form-control" placeholder="Conc. SS(pmol/µl)" id="ConcSS">
+                                <input type="number" class="form-control" placeholder="Conc. SS(pmol/µl)" id="ConcSS">
                             </div>
                             <div class="col col-1 px-1">
-                                <input type="text" class="form-control" placeholder="Conc.WS (pmol/µl)" id="concWS">
+                                <input type="number" class="form-control" placeholder="Conc.WS (pmol/µl)" id="concWS">
                             </div>
                             <div class="col col-1 px-1">
-                                <input type="text" class="form-control" placeholder="Vol.(µl) of WS" id="volWS">
+                                <input type="number" class="form-control" placeholder="Vol.(µl) of WS" id="volWS">
                             </div>
                             <div class="col col-1 px-1">
                                 <div class="d-grid gap-2">
@@ -193,7 +193,6 @@
         }
         // hàm xử lý trả kết quả
         document.getElementById('ketQuaDry').addEventListener('click', function () {
-            document.getElementById('huongDan').innerHTML = '';
             mangTrinhTu = trinhTu.value.split('');
             trinhTuA();
             themHang(ten.value, trinhTu.value, OD.value, ConcSS.value, concWS.value, volWS.value);
