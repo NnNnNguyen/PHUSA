@@ -752,7 +752,7 @@ Tạo thêm một mảng con (hàng dữ liệu)
 -----------------------------------*/
 function createRow(name, sequence, dry, normalization, modified5 = '', modified3 = '', prb = '', sgl = '') {
     let array = [];
-    name = name.replace(new RegExp("[ ](?=[ ])|[^-_:;+=.,{}*'A-Za-z0-9 ]+", "g"), "");
+    name = name.replace(new RegExp("[^-_:;+=.,{}*'A-Za-z0-9 ]+", "g"), "");
     sequence = sequence.replace(new RegExp("[ ](?=[ ])|[^A-Za-z]+", "g"), "").toUpperCase();
     array.push(name, sequence, dry, normalization, modified5, modified3, prb, sgl);
     return array;

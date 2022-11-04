@@ -63,7 +63,8 @@
                     <tbody>
                         <tr style="background: #d8e5fc;">
                             <td scope="col">...</td>
-                            <td scope="col"><input type="text" autocomplete="off" class="form-control" id="oligoName" autofocus>
+                            <td scope="col"><input type="text" autocomplete="off" class="form-control" id="oligoName"
+                                    autofocus>
                             </td>
                             <td scope="col"><input type="text" autocomplete="off" class="form-control" id="sequence">
                             </td>
@@ -94,12 +95,12 @@
 
                     </tbody>
                 </table>
-                <div class="container text-start mt-3">
-                    <p id="huongDanTen"></p>
-                    <p id="huongDanChuoi"></p>
-                    <p id="doDaiChuoi"></p>
-                    <p id="huongDan"></p>
-                </div>
+            </div>
+            <div class="container text-start mt-3">
+                <p id="huongDanTen"></p>
+                <p id="huongDanChuoi"></p>
+                <p id="doDaiChuoi"></p>
+                <p id="huongDan"></p>
             </div>
         </div>
     </div>
@@ -200,28 +201,40 @@
             document.getElementById('huongDanChuoi').innerHTML = result;
             return result;
         }
-        //kiểm tra input OD, volumne, concWanted, concWS, volWS
+        //kiểm tra '' input OD, volumne, concWanted, concWS, volWS
         OD.addEventListener('change', function () {
             OD.value = OD.value.replace(new RegExp("[^,.0-9]+", "g"), "");
-            kiemTraketQuaWet(kiemTraTen, kiemTraChuoi);
         })
         volumne.addEventListener('change', function () {
             volumne.value = volumne.value.replace(new RegExp("[^,.0-9]+", "g"), "");
-            kiemTraketQuaWet(kiemTraTen, kiemTraChuoi);
         })
         concWanted.addEventListener('change', function () {
             concWanted.value = concWanted.value.replace(new RegExp("[^,.0-9]+", "g"), "");
-            kiemTraketQuaWet(kiemTraTen, kiemTraChuoi);
         })
         concWS.addEventListener('change', function () {
             concWS.value = concWS.value.replace(new RegExp("[^,.0-9]+", "g"), "");
-            kiemTraketQuaWet(kiemTraTen, kiemTraChuoi);
         })
         volWS.addEventListener('change', function () {
             volWS.value = volWS.value.replace(new RegExp("[^,.0-9]+", "g"), "");
+        })
+
+        //kiểm tra kí tự số input OD, volumne, concWanted, concWS, volWS
+        OD.addEventListener('keyup', function () {
             kiemTraketQuaWet(kiemTraTen, kiemTraChuoi);
         })
-        
+        volumne.addEventListener('keyup', function () {
+            kiemTraketQuaWet(kiemTraTen, kiemTraChuoi);
+        })
+        concWanted.addEventListener('keyup', function () {
+            kiemTraketQuaWet(kiemTraTen, kiemTraChuoi);
+        })
+        concWS.addEventListener('keyup', function () {
+            kiemTraketQuaWet(kiemTraTen, kiemTraChuoi);
+        })
+        volWS.addEventListener('keyup', function () {
+            kiemTraketQuaWet(kiemTraTen, kiemTraChuoi);
+        })
+
         //kiểm tra đk nhập
         function kiemTraketQuaWet(name, string) {
             if (name == true && string == true && OD.value != '' && volumne.value != '' && concWanted.value != '' && concWS.value != '' && volWS.value != '') {
@@ -234,14 +247,18 @@
         }
         // hàm xử lý trả kết quả
         document.getElementById('ketQuaWet').addEventListener('click', function () {
-            mangTrinhTu = trinhTu.value.split('');
-            trinhTuA();
-            themHang(ten.value, trinhTu.value, OD.value, volumne.value, concWanted.value, concWS.value, volWS.value);
-            mangTotal.push(mangInp);
-            hienThi();
-            ten.value = trinhTu.value = OD.value = volumne.value = concWanted.value = concWS.value = volWS.value = '';
-            ten.focus();
-          
+            if (ten.value != '' && trinhTu.value != '' && OD.value != '' && volumne.value != '' && concWanted.value != '' && concWS.value != '' && volWS.value != '') {
+                document.getElementById('huongDan').innerHTML = '';
+                mangTrinhTu = trinhTu.value.split('');
+                trinhTuA();
+                themHang(ten.value, trinhTu.value, OD.value, volumne.value, concWanted.value, concWS.value, volWS.value);
+                mangTotal.push(mangInp);
+                hienThi();
+                ten.value = trinhTu.value = OD.value = volumne.value = concWanted.value = concWS.value = volWS.value = '';
+                ten.focus();
+            } else {
+                document.getElementById('huongDan').innerHTML = `<p style="color: #ff0000" >Vui lòng kiểm tra lại các trường bạn đã nhập`;
+            }
         })
         // Hàm hiển thi
         function hienThi() {
@@ -399,20 +416,25 @@
             }
         }
         document.getElementById('suaXong').addEventListener('click', function () {
-            for (let i = 0; i < mangTotal.length; i++) {
-                if (mangTotal[i] == '') {
-                    mangTrinhTu = trinhTu.value.split('');
-                    trinhTuA();
-                    themHang(ten.value, trinhTu.value, OD.value, volumne.value, concWanted.value, concWS.value, volWS.value);
-                    mangTotal[i] = mangInp;
+            if (ten.value != '' && trinhTu.value != '' && OD.value != '' && volumne.value != '' && concWanted.value != '' && concWS.value != '' && volWS.value != '') {
+                document.getElementById('huongDan').innerHTML = '';
+                for (let i = 0; i < mangTotal.length; i++) {
+                    if (mangTotal[i] == '') {
+                        mangTrinhTu = trinhTu.value.split('');
+                        trinhTuA();
+                        themHang(ten.value, trinhTu.value, OD.value, volumne.value, concWanted.value, concWS.value, volWS.value);
+                        mangTotal[i] = mangInp;
+                    }
                 }
+                hienThi();
+                ten.value = trinhTu.value = OD.value = volumne.value = concWanted.value = concWS.value = volWS.value = '';
+                document.getElementById('ketQuaWet').style.display = "block";
+                document.getElementById('suaXong').style.display = "none";
+                edit = 0;
+                ten.focus();
+            } else {
+                document.getElementById('huongDan').innerHTML = `<p style="color: #ff0000" >Vui lòng kiểm tra lại các trường bạn đã nhập`;
             }
-            hienThi();
-            ten.value = trinhTu.value = OD.value = volumne.value = concWanted.value = concWS.value = volWS.value = '';
-            document.getElementById('ketQuaWet').style.display = "block";
-            document.getElementById('suaXong').style.display = "none";
-            edit = 0;
-            ten.focus();
         })
         //kiêm tra dấu tiêng việt
         function removeVietnameseTones(str) {
